@@ -32,6 +32,12 @@ def handler(event, context):
         log.error(e)
         raise e
 
+    try:
+        # TODO: dynamodb に突っ込むためのコードを書く
+        pass
+    except Exception as e:
+        log.error(e)
+        raise e
 
 if __name__ == '__main__':
     # for test run in based on your local environemnt
