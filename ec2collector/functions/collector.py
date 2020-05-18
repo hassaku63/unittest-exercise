@@ -13,7 +13,7 @@ log.setLevel(logging.INFO)
 
 def collect_instances_info():
     """
-    実行しているリージョンに存在する EC2 すべてについて、タグを取得して返す。
+    実行しているリージョンに存在する EC2 すべてについて、タグを取得して返す機能
 
     ※今回の課題では、実際に EC2 API を呼び出すことはせず、タグ取得機能を模したダミー関数を提供します。
     時間内で余力があれば、こちらも実際に動くコードに直しつつテストの切り出しに挑戦してみてください。
@@ -56,6 +56,10 @@ def collect_instances_info():
 
 
 def collect(event, context):
+    """
+    この Lambda が実行されているリージョンにある全ての EC2 をリストして、
+    タグ情報を保存する機能
+    """
     try:
         instances = collect_instances_info()
     except Exception as e:
@@ -80,8 +84,11 @@ def collect(event, context):
 
 
 def something_action(event, context):
+    """
+    require_action == true のタグを持つインスタンスに対して、 something_action を実行する機能
+    """
     items = []
-    # 収集したすべてのインスタンスタグ情報をScan
+    # Task1 - 収集したすべてのインスタンスタグ情報をScan
     try:
         dynamo = boto3.resource('dynamodb')
         table: Table = dynamo.Table(settings.TABLE_NAME)
@@ -91,7 +98,7 @@ def something_action(event, context):
         log.error(e.response['Error']['Message'])
         raise e
 
-    # 'require_action' タグを持つインスタンスにのみ何らかのアクションを実行する
+    # Task2 - 'require_action' タグを持つインスタンスにのみ何らかのアクションを実行する
     result = []
     for item in items:
         # tag_keys = [tag['Key'] for tag in item['Tags']]
