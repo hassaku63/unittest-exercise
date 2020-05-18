@@ -9,6 +9,7 @@ ipython = "*"
 [packages]
 boto3 = "*"
 python-dotenv = "*"
+boto3_type_annotations = "*"
 
 [requires]
 python_version = "3.7"
