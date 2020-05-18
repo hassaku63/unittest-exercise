@@ -4,6 +4,7 @@ from datetime import datetime
 from boto3_type_annotations.dynamodb import Table
 import boto3
 from botocore.exceptions import ClientError
+from ec2collector.libs.kinesis import put_action_record
 from ec2collector import settings
 
 import logging
@@ -109,8 +110,7 @@ def something_action(event, context):
                 break
     for instance in result:
         # do something action
-        # TODO: できれば kinesis put-record するところまで書きたい
-        log.info(f"something awesome: {json.dumps(instance)}")
+        put_action_record(instance)
 
     return result
 
