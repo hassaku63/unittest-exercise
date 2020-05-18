@@ -8,11 +8,16 @@ provider:
   environment:
     STAGE: ${self:provider.stage}
     TABLE_NAME: ${self:service}-ec2_resource_table-${self:provider.stage}
+    ACTION_STREAM: ${self:service}-SomethingActionStream-${self:provider.stage}
   iamRoleStatements:
     - Effect: "Allow"
       Action:
         - "s3:ListBucket"
       Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+    - Effect: "Allow"
+      Action:
+        - "kinesis:*"
+      Resource: "*"        
     - Effect: "Allow"
       Action:
         - "dynamodb:PutItem"
@@ -59,6 +64,15 @@ functions:
     handler: ec2collector/functions/collector.something_action
     events:
       - schedule: cron(0 18 * * ? *)
+  DoSomething:
+    handler: ec2collector/functions/action.do_something
+    event:
+      - stream:
+          type: kinesis
+          batchSize: 1
+          startingPosition: LATEST
+          arn:
+            Fn::GetAtt: [ SomethingStream , Arn ]
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
@@ -112,6 +126,11 @@ resources:
           - AttributeName: InstanceId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
+    SomethingStream:
+      Type: AWS::Kinesis::Stream
+      Properties:
+        Name: ${self:provider.environment.ACTION_STREAM}
+        ShardCount: 1
   Outputs:
     EC2ResourceTable:
       Description: Table ARN

@@ -73,7 +73,7 @@ def collect(event, context):
                     'Tags': instance['Tags']
                 })
     except Exception as e:
-        log.error(e)
+        log.error(e)    
         raise e
     
     return instances
@@ -81,6 +81,7 @@ def collect(event, context):
 
 def something_action(event, context):
     items = []
+    # 収集したすべてのインスタンスタグ情報をScan
     try:
         dynamo = boto3.resource('dynamodb')
         table: Table = dynamo.Table(settings.TABLE_NAME)
@@ -89,15 +90,21 @@ def something_action(event, context):
     except ClientError as e:
         log.error(e.response['Error']['Message'])
         raise e
+
+    # 'require_action' タグを持つインスタンスにのみ何らかのアクションを実行する
     result = []
     for item in items:
-        tag_keys = [tag['Key'] for tag in item['Tags']]
-        if 'require_action' in tag_keys:
-            log.info(f"found required action: {item['InstanceId']}")
-            result.append(item)
+        # tag_keys = [tag['Key'] for tag in item['Tags']]
+        for tag in item['Tags']:
+            if tag['Key'] == 'require_action':
+                log.info(f"found required action: {item['InstanceId']}")
+                result.append(item)
+                break
     for instance in result:
         # do something action
+        # TODO: できれば kinesis put-record するところまで書きたい
         log.info(f"something awesome: {json.dumps(instance)}")
+
     return result
 
 
