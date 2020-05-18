@@ -18,7 +18,7 @@ def collect_instances_info():
     ※今回の課題では、実際に EC2 API を呼び出すことはせず、タグ取得機能を模したダミー関数を提供します。
     時間内で余力があれば、こちらも実際に動くコードに直しつつテストの切り出しに挑戦してみてください。
 
-    :return: List of dict {'InstanceId': 'i-xxxxx', 'Tags': ['tag-value1', 'tag-value2]}
+    :return: List of dict {'InstanceId': <instance-id>, 'Tags': [<tags>]}
     :rtype: list
     """
     # ダミー実装
