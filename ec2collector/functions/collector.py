@@ -59,7 +59,7 @@ def something_action(event, context):
     for item in items:
         # tag_keys = [tag['Key'] for tag in item['Tags']]
         for tag in item['Tags']:
-            if tag['Key'] == 'require_action':
+            if tag['Key'] == 'require_action' and tag['Value'] == 'true':
                 log.info(f"found required action: {item['InstanceId']}")
                 result.append(item)
                 break
