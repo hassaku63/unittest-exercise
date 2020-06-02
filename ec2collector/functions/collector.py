@@ -23,7 +23,6 @@ def get_table(TABLE_NAME):
 
 def put_tag_info(table, instances):
     try:
-        # boto3.resource().Table().batch_writer().__enter__.put_item()
         with table.batch_writer(overwrite_by_pkeys=['InstanceId']) as batch:
             # 参考: https://dev.classmethod.jp/articles/lambda-python-dynamodb/
             for instance in instances:
