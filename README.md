@@ -2,6 +2,7 @@
 
 Serverless Framework を題材にした、テストコードの課題アプリです。
 
+![diagram](unittest-exercise-diagram.png)
 
 ## ユースケース
 
