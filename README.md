@@ -6,6 +6,8 @@ Serverless Framework を題材にした、テストコードの課題アプリ�
 
 ![diagram](unittest-exercise-diagram.png)
 
+https://cacoo.com/diagrams/mQ0wxKSOyBpvZatt/4B35C
+
 ## 要件
 
 - ローンチしているEC2インスタンスのうち、特定のインスタンスにだけ、定期的に何らかの「アクション」を実行したい
