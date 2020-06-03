@@ -39,7 +39,7 @@ provider:
             - "/*"
 
 plugins:
-  - serverless-dotenv-plugin
+  # - serverless-dotenv-plugin
   - serverless-python-requirements
 
 package:
